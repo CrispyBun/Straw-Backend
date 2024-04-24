@@ -1,7 +1,20 @@
+import 'dotenv/config';
 import express from 'express';
 import helmet  from 'helmet';
+import pg from 'pg';
 import joi from 'joi';
 // import nodemailer from 'nodemailer';
+
+const { Client } = pg;
+
+const process_env_DB_PORT = Number(process.env.DB_PORT);
+const client = new Client({
+    user:     process.env.DB_USER,
+    password: process.env.DB_PASS,
+    host:     process.env.DB_HOST,
+    port:     process_env_DB_PORT,
+    database: process.env.DB_NAME,
+});
 
 const app = express();
 
@@ -12,6 +25,11 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
+console.log("Launching");
+console.log("Connecting to database");
+client.connect(() => {
+    console.log("Success");
+    app.listen(3000, () => {
+        console.log("Server is running on port 3000");
+    });
 });
