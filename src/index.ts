@@ -1,14 +1,12 @@
 import 'dotenv/config';
-require("log-node")();
-import log from 'log';
 import express from 'express';
 import helmet  from 'helmet';
 import pg from 'pg';
 import joi from 'joi';
+import { logger } from './logger/loggers'
 // import nodemailer from 'nodemailer';
 
 const { Client } = pg;
-const logMain = log.get("main");
 
 const process_env_DB_PORT = Number(process.env.DB_PORT);
 const client = new Client({
@@ -28,11 +26,11 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-logMain.info("Launching");
-logMain.info("Connecting to database");
+logger.info("Launching");
+logger.info("Connecting to database");
 client.connect(() => {
-    logMain.info("Connected to database, launching server");
+    logger.info("Connected to database, launching server");
     app.listen(3000, () => {
-        logMain.notice("Server is running on port 3000");
+        logger.info("Server is running on port 3000");
     });
 });
