@@ -3,6 +3,7 @@ import { consoleFormat, fileFormat } from './formats';
 
 // Main logger
 const logger = createLogger({
+    level: process.env.LOG_LEVEL,
     transports: [
         new transports.Console({
             format: consoleFormat
