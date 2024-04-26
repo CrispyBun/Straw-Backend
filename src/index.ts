@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
 import helmet  from 'helmet';
 import { logger } from './logger/loggers';
 import pgclient from './database/client';
@@ -8,7 +9,17 @@ import endpoints from './routers/endpoints';
 
 const app = express();
 
-app.use(helmet());
+app.use(cors());
+app.use(helmet({
+    // Disable frame
+    frameguard: false,
+    // Disable content security policy
+    contentSecurityPolicy: false,
+    // Cross origin resource policy
+    crossOriginResourcePolicy: {policy: "cross-origin"},
+    // Disable script-src 'self'
+    hidePoweredBy: true,
+}));
 app.use(express.json());
 
 app.use("/", endpoints);
