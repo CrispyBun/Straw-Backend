@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS "board";
-DROP TABLE IF EXISTS "post";
-DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS "board" CASCADE;
+DROP TABLE IF EXISTS "post" CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
 
 CREATE TABLE "board" (
     "id" SERIAL NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE "post" (
     "id" SERIAL NOT NULL,
     "author" INT NOT NULL,
     "board" INT NOT NULL,
-    "content" TEXT
+    "content" TEXT,
     FOREIGN KEY ("board") REFERENCES "board" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY ("author") REFERENCES "user" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
