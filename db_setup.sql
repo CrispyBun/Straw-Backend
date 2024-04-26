@@ -1,0 +1,21 @@
+DROP TABLE IF EXISTS "board";
+DROP TABLE IF EXISTS "post";
+DROP TABLE IF EXISTS "user";
+
+CREATE TABLE "board" (
+    "id" SERIAL NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "post" (
+    "id" SERIAL NOT NULL,
+    "author" INT NOT NULL,
+    "board" INT NOT NULL,
+    "content" TEXT
+    FOREIGN KEY ("board") REFERENCES "board" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY ("author") REFERENCES "user" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE "user" (
+    "id" SERIAL NOT NULL
+);
