@@ -1,21 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
 import helmet  from 'helmet';
-import pg from 'pg';
-import joi from 'joi';
-import { logger } from './logger/loggers'
-// import nodemailer from 'nodemailer';
-
-const { Client } = pg;
-
-const process_env_DB_PORT = Number(process.env.DB_PORT);
-const client = new Client({
-    user:     process.env.DB_USER,
-    password: process.env.DB_PASS,
-    host:     process.env.DB_HOST,
-    port:     process_env_DB_PORT,
-    database: process.env.DB_NAME,
-});
+import { logger } from './logger/loggers';
+import pgclient from './database/client';
 
 const app = express();
 
@@ -28,7 +15,7 @@ app.get('/', (req, res) => {
 
 logger.info("Launching");
 logger.info("Connecting to database");
-client.connect((err) => {
+pgclient.connect((err) => {
     if (err) {
         logger.error("Could not connect to database");
         logger.error(err.stack);
