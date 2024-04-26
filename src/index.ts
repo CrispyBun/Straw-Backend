@@ -4,14 +4,14 @@ import helmet  from 'helmet';
 import { logger } from './logger/loggers';
 import pgclient from './database/client';
 
+import endpoints from './endpoints/all';
+
 const app = express();
 
 app.use(helmet());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
+app.use(endpoints);
 
 logger.info("Launching");
 logger.info("Connecting to database");
