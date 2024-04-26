@@ -28,8 +28,13 @@ app.get('/', (req, res) => {
 
 logger.info("Launching");
 logger.info("Connecting to database");
-client.connect(() => {
-    logger.info("Connected to database, launching server");
+client.connect((err) => {
+    if (err) {
+        logger.error("Could not connect to database");
+        logger.error(err.stack);
+    }
+
+    logger.info("Launching server");
     app.listen(3000, () => {
         logger.info("Server is running on port 3000");
     });
