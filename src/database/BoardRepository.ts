@@ -2,6 +2,17 @@ import client from "./client";
 import tstypes from '../types/express/index';
 
 class BoardRepository {
+    async exists(id: number) {
+        const board = await client.query('SELECT COUNT(*) FROM "board" WHERE "id" = $1', [id]);
+        if (board.rows[0].count > 0) return true;
+        return false;
+    }
+
+    async get(id: number) {
+        const board = await client.query('SELECT * FROM "board" WHERE "id" = $1', [id]);
+        return board.rows[0];
+    }
+
     async getMany(skip: number = 0, limit: number = 10, types?: tstypes.BoardType[]) {
         let boards;
         if (types) {

@@ -12,6 +12,7 @@ interface Pagination {
 export type BoardType = 'official'|'usermade'|'profile'
 
 interface BoardData {
+    id: number,
     types?: BoardType[]
 }
 

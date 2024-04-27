@@ -10,6 +10,23 @@ class BoardController {
         .setData(boards)
         .send(res);
     }
+
+    async getBoard(req: express.Request, res: express.Response) {
+        const exists = await boardRepository.exists(req.boardData.id);
+        if (!exists) {
+            builder
+            .badRequest()
+            .setMessage(`Board with ID ${req.boardData.id} does not exist`)
+            .send(res);
+            return;
+        }
+
+        const board = await boardRepository.get(req.boardData.id);
+        builder
+        .success()
+        .setData(board)
+        .send(res);
+    }
 }
 
 export default new BoardController;
