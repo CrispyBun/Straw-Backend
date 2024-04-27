@@ -1,5 +1,5 @@
 import express from 'express';
-import boardRepository from '../database/repositories/board';
+import boardRepository from '../database/BoardRepository';
 import handlePagination from '../middleware/handlePagination';
 const board = express.Router();
 
