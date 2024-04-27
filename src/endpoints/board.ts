@@ -1,11 +1,16 @@
 import express from 'express';
-import boardRepository from '../database/BoardRepository';
 import handlePagination from '../middleware/handlePagination';
+import BoardController from '../controllers/BoardController';
 const board = express.Router();
 
+let controller: BoardController;
+board.use("/", (req, res, next) => {
+    controller = new BoardController(req, res);
+    next();
+})
+
 board.get("/", handlePagination(10, 0), async (req, res) => {
-    const boards = await boardRepository.getMany(req.pagination.skip, req.pagination.limit);
-    res.json(boards);
+    controller.getBoards();
 });
 
 export default board
