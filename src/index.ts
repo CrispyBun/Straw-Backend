@@ -6,6 +6,7 @@ import { logger } from './logger/loggers';
 import pgclient from './database/client';
 
 import endpoints from './routers/endpoints';
+import globalMiddleware from './routers/globalMiddleware';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(helmet({
 }));
 app.use(express.json());
 
+app.use("/", globalMiddleware);
 app.use("/", endpoints);
 
 logger.info("Launching");
