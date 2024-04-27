@@ -8,7 +8,7 @@ const board = express.Router();
 
 board.use("/", handleBoardData())
 
-board.get("/", handlePagination(10, 0), handleBoardTypes(), (req, res) => {
+board.get("/", handlePagination(10, 1024, 0), handleBoardTypes(), (req, res) => {
     controller.getBoards(req, res);
 });
 
