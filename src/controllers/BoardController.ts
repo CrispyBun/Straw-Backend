@@ -1,15 +1,15 @@
-import Controller from './Controller';
+import express from 'express';
 import boardRepository from '../database/BoardRepository';
 import builder from '../response/ResponseBuilder';
 
-class BoardController extends Controller {
-    async getBoards() {
-        const boards = await boardRepository.getMany(this.req.pagination.skip, this.req.pagination.limit, this.req.boardData.types);
+class BoardController {
+    async getBoards(req: express.Request, res: express.Response) {
+        const boards = await boardRepository.getMany(req.pagination.skip, req.pagination.limit, req.boardData.types);
         builder
         .success()
         .setData(boards)
-        .send(this.res);
+        .send(res);
     }
 }
 
-export default BoardController;
+export default new BoardController;
