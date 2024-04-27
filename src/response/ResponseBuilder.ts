@@ -3,7 +3,7 @@ import * as express from 'express';
 class Response {
     private status: number = 200;
     private message: string = "OK";
-    private data: object = {};
+    private data: object|null = null;
 
     public send(res: express.Response) {
         res.status(this.status);
