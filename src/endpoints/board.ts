@@ -1,5 +1,6 @@
 import express from 'express';
 import handlePagination from '../middleware/handlePagination';
+import handleBoardData from '../middleware/handleBoardData';
 import BoardController from '../controllers/BoardController';
 const board = express.Router();
 
@@ -9,7 +10,7 @@ board.use("/", (req, res, next) => {
     next();
 })
 
-board.get("/", handlePagination(10, 0), async (req, res) => {
+board.get("/", handlePagination(10, 0), handleBoardData(), () => {
     controller.getBoards();
 });
 

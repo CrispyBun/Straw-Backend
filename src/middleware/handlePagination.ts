@@ -1,6 +1,6 @@
-import * as express from 'express';
+import express from 'express';
 import joi from 'joi';
-import builder from '../response/ResponseBuilder';
+import validateSchema from './helper/validateSchema';
 
 const schema = joi.object({
     limit: joi.number()
@@ -17,18 +17,12 @@ const handlePagination = (defaultLimit: number = 10, defaultSkip: number = 0) =>
         const queryLimit = req.query.limit || defaultLimit;
         const querySkip = req.query.skip || defaultSkip;
 
-        const validated = schema.validate({limit: queryLimit, skip: querySkip});
-        if (validated.error) {
-            builder
-            .badRequest()
-            .setMessage(validated.error.message)
-            .send(res);
-            return;
-        }
+        const result = validateSchema({limit: queryLimit, skip: querySkip}, schema, res);
+        if (!result) return;
 
         req.pagination = {
-            limit: validated.value.limit,
-            skip: validated.value.skip
+            limit: result.limit,
+            skip: result.skip
         }
 
         next();
