@@ -5,17 +5,17 @@ import validateSchema from './helper/validateSchema';
 const stringSchema = joi.string().valid('official', 'usermade', 'profile');
 
 const schema = joi.object({
-    types: joi.array().items(stringSchema).unique()
+    type: joi.array().items(stringSchema).unique()
 });
 
 const handleBoardTypes = () => {
     return (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        if (typeof req.query.types === "string") req.query.types = [req.query.types];
+        if (typeof req.query.type === "string") req.query.type = [req.query.type];
 
-        const result = validateSchema({types: req.query.types}, schema, res);
+        const result = validateSchema({type: req.query.type}, schema, res);
         if (!result) return;
 
-        req.boardData.types = result.types;
+        req.boardData.type = result.type;
 
         next();
     }

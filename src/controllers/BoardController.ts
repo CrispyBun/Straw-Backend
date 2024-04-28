@@ -4,7 +4,7 @@ import builder from '../response/ResponseBuilder';
 
 class BoardController {
     async getBoards(req: express.Request, res: express.Response) {
-        const boards = await boardRepository.getMany(req.pagination.skip, req.pagination.limit, req.boardData.types);
+        const boards = await boardRepository.getMany(req.pagination.skip, req.pagination.limit, req.boardData.type);
         const boardCount = await boardRepository.getCount();
         builder
         .success()
