@@ -23,5 +23,9 @@ declare global {
             boardData: BoardData,
             pagination: Pagination,
         }
+
+        interface Response {
+            logId?: number;
+        }
     }
 }

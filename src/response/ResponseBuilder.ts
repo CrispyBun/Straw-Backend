@@ -1,4 +1,5 @@
-import * as express from 'express';
+import express from 'express';
+import { logger } from '../logger/loggers';
 
 class Response {
     private status: number = 500; // 500 as default if status hasn't been set (should never happen)
@@ -13,6 +14,7 @@ class Response {
             meta: this.meta,
             data: this.data
         });
+        logger.verbose(`[-> ${res.logId}] Responded with ${this.status} (${this.message})`);
     }
 
     public setStatus(status: number) {
