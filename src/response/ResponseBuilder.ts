@@ -1,14 +1,16 @@
 import * as express from 'express';
 
 class Response {
-    private status: number = 200;
-    private message: string = "OK";
+    private status: number = 500; // 500 as default if status hasn't been set (should never happen)
+    private message: string = "Internal Server Error";
     private data: object|null = null;
+    private meta?: {[key: string]: any};
 
     public send(res: express.Response) {
         res.status(this.status);
         res.json({
             message: this.message,
+            meta: this.meta,
             data: this.data
         });
     }
@@ -25,6 +27,12 @@ class Response {
 
     public setData(data: object) {
         this.data = data;
+        return this;
+    }
+
+    public addMeta(key: string, value: any) {
+        if (this.meta === undefined) this.meta = {};
+        this.meta[key] = value;
         return this;
     }
 }
