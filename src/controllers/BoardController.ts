@@ -3,17 +3,9 @@ import boardRepository from '../database/BoardRepository';
 import builder from '../response/ResponseBuilder';
 
 class BoardController {
-    async getBoards(req: express.Request, res: express.Response) {
-        const boards = await boardRepository.getMany(req.pagination.skip, req.pagination.limit, req.boardData.type);
-        const boardCount = await boardRepository.getCount();
-        builder
-        .success()
-        .setData(boards)
-        .addMeta("count", boardCount)
-        .send(res);
-    }
-
     async getBoard(req: express.Request, res: express.Response) {
+        if (!req.boardData.id) throw new Error();
+
         const exists = await boardRepository.exists(req.boardData.id);
         if (!exists) {
             builder
@@ -27,6 +19,25 @@ class BoardController {
         builder
         .success()
         .setData(board)
+        .send(res);
+    }
+
+    async getBoards(req: express.Request, res: express.Response) {
+        const boards = await boardRepository.getMany(req.pagination.skip, req.pagination.limit, req.boardData.type);
+        const boardCount = await boardRepository.getCount();
+        builder
+        .success()
+        .setData(boards)
+        .addMeta("count", boardCount)
+        .send(res);
+    }
+
+    async addBoard(req: express.Request, res: express.Response) {
+        if (!req.boardData.name) throw new Error();
+        const id = await boardRepository.add({name: req.boardData.name});
+        builder
+        .success()
+        .setData({id: id})
         .send(res);
     }
 }

@@ -28,6 +28,13 @@ class BoardRepository {
         }
         return boards.rows;
     }
+
+    async add(data: {name: string, type?: tstypes.BoardType}) {
+        const name = data.name
+        const type = data.type || 'usermade'
+        const result = await client.query('INSERT INTO "board" ("name", "type") VALUES ($1, $2) RETURNING "id"', [name, type]);
+        return result.rows[0].id;
+    }
 }
 
 export default new BoardRepository();
