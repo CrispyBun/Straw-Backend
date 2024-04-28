@@ -16,4 +16,16 @@ const fileFormat = combine(
     })
 );
 
-export { consoleFormat, fileFormat };
+const requestFormat = combine(
+    timestamp(),
+    printf(({ level, message, timestamp }) => {
+        return `${timestamp}
+Url:     ${message.req.url}
+Res ID:  ${message.res.logId}
+Method:  ${message.req.method}
+Origin:  ${message.req.headers.origin}
+`;
+    })
+);
+
+export { consoleFormat, fileFormat, requestFormat };

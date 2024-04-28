@@ -1,5 +1,5 @@
 import { createLogger, transports, format } from 'winston';
-import { consoleFormat, fileFormat } from './formats';
+import { consoleFormat, fileFormat, requestFormat } from './formats';
 
 // Main logger
 const logger = createLogger({
@@ -12,4 +12,11 @@ const logger = createLogger({
     ]
 });
 
-export { logger };
+// Request logger
+const requestLogger = createLogger({
+    transports: [
+        new transports.File({filename: "logs/requsts.log", format: requestFormat})
+    ]
+});
+
+export { logger, requestLogger };
