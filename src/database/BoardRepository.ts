@@ -8,6 +8,11 @@ class BoardRepository {
         return false;
     }
 
+    async getCount() {
+        const result = await client.query('SELECT COUNT(*) FROM "board"');
+        return Number(result.rows[0].count);
+    }
+
     async get(id: number) {
         const board = await client.query('SELECT * FROM "board" WHERE "id" = $1', [id]);
         return board.rows[0];

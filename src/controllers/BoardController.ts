@@ -5,9 +5,11 @@ import builder from '../response/ResponseBuilder';
 class BoardController {
     async getBoards(req: express.Request, res: express.Response) {
         const boards = await boardRepository.getMany(req.pagination.skip, req.pagination.limit, req.boardData.types);
+        const boardCount = await boardRepository.getCount();
         builder
         .success()
         .setData(boards)
+        .addMeta("count", boardCount)
         .send(res);
     }
 
