@@ -7,7 +7,8 @@ import pgclient from './database/client';
 
 import globalMiddleware from './routers/globalMiddleware';
 import endpoints from './routers/endpoints';
-import notFound from './routers/notFound';
+import notFound from './middleware/notFound';
+import errorHandler from './middleware/errorHandler';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.json());
 app.use(globalMiddleware);
 app.use(endpoints);
 app.use(notFound);
+app.use(errorHandler);
 
 logger.info("Launching");
 logger.info("Connecting to database");
