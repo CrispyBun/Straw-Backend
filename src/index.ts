@@ -5,8 +5,9 @@ import helmet  from 'helmet';
 import { logger } from './logger/loggers';
 import pgclient from './database/client';
 
-import endpoints from './routers/endpoints';
 import globalMiddleware from './routers/globalMiddleware';
+import endpoints from './routers/endpoints';
+import notFound from './routers/notFound';
 
 const app = express();
 
@@ -23,8 +24,9 @@ app.use(helmet({
 }));
 app.use(express.json());
 
-app.use("/", globalMiddleware);
-app.use("/", endpoints);
+app.use(globalMiddleware);
+app.use(endpoints);
+app.use(notFound);
 
 logger.info("Launching");
 logger.info("Connecting to database");
