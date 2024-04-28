@@ -11,7 +11,9 @@ import notFound from './routers/notFound';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS']
+}));
 app.use(helmet({
     // Disable frame
     frameguard: false,
