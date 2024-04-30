@@ -16,8 +16,6 @@ app.use(cors({
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS']
 }));
 app.use(helmet({
-    // Disable frame
-    frameguard: false,
     // Disable content security policy
     contentSecurityPolicy: false,
     // Cross origin resource policy

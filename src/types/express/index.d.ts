@@ -28,6 +28,7 @@ declare global {
 
         interface Response {
             logId?: number;
+            requestTimestamp?: Date;
         }
     }
 }

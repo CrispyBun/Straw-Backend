@@ -14,7 +14,7 @@ class Response {
             meta: this.meta,
             data: this.data
         });
-        logger.verbose(`[-> ${res.logId}] Responded with ${this.status} (${this.message})`);
+        logger.verbose(`[-> ${res.logId}] Responded with ${this.status} (${this.message}) (${(new Date as any) - (res.requestTimestamp as any)}ms)`);
     }
 
     public setStatus(status: number) {
