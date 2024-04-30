@@ -24,6 +24,7 @@ Url:     ${message.req.url}
 Res ID:  ${message.res.logId}
 Method:  ${message.req.method}
 Origin:  ${message.req.headers.origin}
+IP:      ${message.req.ip}
 `;
     })
 );
