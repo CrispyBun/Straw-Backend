@@ -5,22 +5,22 @@ import validateSchema from './helper/validateSchema';
 const stringSchema = joi.string().max(64, 'utf8').min(1);
 
 const schema = joi.object({
-    name: stringSchema
+    summary: stringSchema
 });
 
 const schemaRequired = joi.object({
-    name: stringSchema.required()
+    summary: stringSchema.required()
 });
 
-const handleBoardName = (optional?: boolean) => {
+const handleBoardSummary = (optional?: boolean) => {
     return (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const result = validateSchema({name: req.body.name}, optional ? schema : schemaRequired, res);
+        const result = validateSchema({summary: req.body.summary}, optional ? schema : schemaRequired, res);
         if (!result) return;
 
-        req.boardData.name = result.name;
+        req.boardData.summary = result.summary;
 
         next();
     }
 }
 
-export default handleBoardName;
+export default handleBoardSummary;

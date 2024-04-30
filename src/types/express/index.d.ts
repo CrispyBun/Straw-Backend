@@ -14,7 +14,8 @@ export type BoardType = 'official'|'usermade'|'profile'
 interface BoardData {
     id?: number,
     type?: BoardType[],
-    name?: string
+    name?: string,
+    summary?: string
 }
 
 declare global {

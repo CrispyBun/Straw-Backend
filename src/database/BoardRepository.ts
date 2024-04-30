@@ -29,10 +29,11 @@ class BoardRepository {
         return boards.rows;
     }
 
-    async add(data: {name: string, type?: tstypes.BoardType}) {
+    async add(data: {name: string, summary: string, type?: tstypes.BoardType}) {
         const name = data.name
+        const summary = data.summary
         const type = data.type || 'usermade'
-        const result = await client.query('INSERT INTO "board" ("name", "type") VALUES ($1, $2) RETURNING "id"', [name, type]);
+        const result = await client.query('INSERT INTO "board" ("name", "summary", "type") VALUES ($1, $2, $3) RETURNING "id"', [name, summary, type]);
         return result.rows[0].id;
     }
 }

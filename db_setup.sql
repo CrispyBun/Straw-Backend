@@ -9,6 +9,7 @@ CREATE TYPE "board_type" AS ENUM ('official', 'usermade', 'profile');
 CREATE TABLE "board" (
     "id" SERIAL NOT NULL,
     "name" varchar(128) NOT NULL,
+    "summary" varchar(128) NOT NULL,
     "type" board_type NOT NULL DEFAULT 'usermade',
     PRIMARY KEY ("id")
 );

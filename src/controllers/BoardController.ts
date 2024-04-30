@@ -34,7 +34,11 @@ class BoardController {
 
     async addBoard(req: express.Request, res: express.Response) {
         if (!req.boardData.name) throw new Error();
-        const id = await boardRepository.add({name: req.boardData.name});
+        if (!req.boardData.summary) throw new Error();
+        const id = await boardRepository.add({
+            name: req.boardData.name,
+            summary: req.boardData.summary
+        });
         builder
         .success()
         .setData({id: id})
