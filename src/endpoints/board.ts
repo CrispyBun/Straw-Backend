@@ -1,11 +1,11 @@
 import express from 'express';
+import controller from '../controllers/BoardController';
 import handlePagination from '../middleware/handlePagination';
 import handleBoardData from '../middleware/handleBoardData';
 import handleBoardType from '../middleware/handleBoardType';
 import handleBoardName from '../middleware/handleBoardName';
 import handleBoardSummary from '../middleware/handleBoardSummary';
 import { handleBoardId } from '../middleware/handleId';
-import controller from '../controllers/BoardController';
 const board = express.Router();
 
 board.use("/", handleBoardData());

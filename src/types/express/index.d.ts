@@ -1,7 +1,9 @@
 export {}
 
 interface UserData {
-    id?: number
+    id?: number,
+    email?: string,
+    password?: string
 }
 
 interface Pagination {

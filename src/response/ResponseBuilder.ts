@@ -59,6 +59,11 @@ class ResponseBuilder {
         const response = new Response();
         return response.setStatus(400).setMessage("Bad Request");
     }
+
+    public conflict() {
+        const response = new Response();
+        return response.setStatus(409).setMessage("Conflict");
+    }
 }
 
 export default new ResponseBuilder;

@@ -12,6 +12,8 @@ import errorHandler from './middleware/errorHandler';
 
 const app = express();
 
+app.use(globalMiddleware);
+
 app.use(cors({
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS']
 }));
@@ -25,7 +27,6 @@ app.use(helmet({
 }));
 app.use(express.json());
 
-app.use(globalMiddleware);
 app.use(endpoints);
 app.use(notFound);
 app.use(errorHandler);
