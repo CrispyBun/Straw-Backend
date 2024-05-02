@@ -46,4 +46,4 @@ class BoardController {
     }
 }
 
-export default new BoardController;
+export default new BoardController();

@@ -1,7 +1,7 @@
 export {}
 
 interface UserData {
-    id: number
+    id?: number
 }
 
 interface Pagination {
