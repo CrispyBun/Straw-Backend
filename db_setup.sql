@@ -16,6 +16,7 @@ CREATE TABLE "board" (
 
 CREATE TABLE "user" (
     "id" SERIAL NOT NULL,
+    "username" varchar(64) NOT NULL UNIQUE,
     "email" varchar(255) NULL UNIQUE,
     "password" char(60) NOT NULL,
     PRIMARY KEY ("id")

@@ -5,6 +5,7 @@ import builder from '../response/ResponseBuilder';
 
 class UserController {
     async addUser(req: express.Request, res: express.Response) {
+        if (!req.userData.username) throw new Error();
         if (!req.userData.email) throw new Error();
         if (!req.userData.password) throw new Error();
 
@@ -16,8 +17,16 @@ class UserController {
             return;
         }
 
+        if (await userRepository.usernameExists(req.userData.username)) {
+            builder
+            .conflict()
+            .setMessage("Username is already in use")
+            .send(res);
+            return;
+        }
+
         const hash = await bcrypt.hash(req.userData.password, 12);
-        const id = await userRepository.add({password: hash, email: req.userData.email});
+        const id = await userRepository.add({password: hash, username: req.userData.username, email: req.userData.email});
 
         builder
         .success()
