@@ -1,25 +1,21 @@
 import express from 'express';
 import controller from '../controllers/BoardController';
-import handlePagination from '../middleware/handlePagination';
-import handleBoardData from '../middleware/handleBoardData';
-import handleBoardType from '../middleware/handleBoardType';
-import handleBoardName from '../middleware/handleBoardName';
-import handleBoardSummary from '../middleware/handleBoardSummary';
-import { handleBoardId } from '../middleware/handleId';
+import handleBodyField from '../middleware/handleBodyField';
+import handlePaginationQuery from '../middleware/handlePaginationQuery';
+import handleBoardTypeQuery from '../middleware/handleBoardTypeQuery';
+import { handleBoardIdParam } from '../middleware/handleIdParam';
 const board = express.Router();
 
-board.use("/", handleBoardData());
-
-board.get("/", handlePagination(50, 1024, 0), handleBoardType(), (req, res) => {
+board.get("/", handlePaginationQuery(50, 1024, 0), handleBoardTypeQuery(), (req, res) => {
     controller.getBoards(req, res);
 });
 
-board.get("/:id", handleBoardId("id"), (req, res) => {
+board.get("/:id", handleBoardIdParam("id"), (req, res) => {
     controller.getBoard(req, res);
 });
 
 // TODO: verify user
-board.post("/", handleBoardName(), handleBoardSummary(), (req, res) => {
+board.post("/", handleBodyField("boardName"), handleBodyField("boardSummary"), (req, res) => {
     controller.addBoard(req, res);
 });
 

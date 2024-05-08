@@ -1,14 +1,9 @@
 import express from 'express';
 import controller from '../controllers/UserController';
-import handleUserData from '../middleware/handleUserData';
-import handleUserEmail from '../middleware/handleUserEmail';
-import handleUserUsername from '../middleware/handleUserUsername';
-import handleUserPassword from '../middleware/handleUserPassword';
+import handleBodyField from '../middleware/handleBodyField';
 const user = express.Router();
 
-user.use("/", handleUserData());
-
-user.post("/", handleUserUsername(), handleUserEmail(), handleUserPassword(), (req, res) => {
+user.post("/", handleBodyField("username"), handleBodyField("email"), handleBodyField("password"), (req, res) => {
     controller.addUser(req, res);
 })
 

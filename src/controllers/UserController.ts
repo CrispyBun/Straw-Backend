@@ -5,11 +5,11 @@ import builder from '../response/ResponseBuilder';
 
 class UserController {
     async addUser(req: express.Request, res: express.Response) {
-        if (!req.userData.username) throw new Error();
-        if (!req.userData.email) throw new Error();
-        if (!req.userData.password) throw new Error();
+        if (!req.parsedBody.username) throw new Error();
+        if (!req.parsedBody.email) throw new Error();
+        if (!req.parsedBody.password) throw new Error();
 
-        if (await userRepository.emailExists(req.userData.email)) {
+        if (await userRepository.emailExists(req.parsedBody.email)) {
             builder
             .conflict()
             .setMessage("Email is already in use")
@@ -17,7 +17,7 @@ class UserController {
             return;
         }
 
-        if (await userRepository.usernameExists(req.userData.username)) {
+        if (await userRepository.usernameExists(req.parsedBody.username)) {
             builder
             .conflict()
             .setMessage("Username is already in use")
@@ -25,8 +25,8 @@ class UserController {
             return;
         }
 
-        const hash = await bcrypt.hash(req.userData.password, 12);
-        const id = await userRepository.add({password: hash, username: req.userData.username, email: req.userData.email});
+        const hash = await bcrypt.hash(req.parsedBody.password, 12);
+        const id = await userRepository.add({password: hash, username: req.parsedBody.username, email: req.parsedBody.email});
 
         builder
         .success()

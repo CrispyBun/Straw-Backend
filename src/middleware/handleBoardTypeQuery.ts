@@ -14,7 +14,7 @@ const handleBoardType = () => {
         const result = validateSchema({type: req.query.type}, schema, res);
         if (!result) return;
 
-        req.boardData.type = result.type;
+        req.parsedQuery.boardType = result.type;
 
         next();
     }

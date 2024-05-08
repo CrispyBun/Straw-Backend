@@ -1,12 +1,5 @@
 export {}
 
-interface UserData {
-    id?: number,
-    username?: string,
-    email?: string,
-    password?: string
-}
-
 interface Pagination {
     limit: number,
     skip: number
@@ -14,19 +7,30 @@ interface Pagination {
 
 export type BoardType = 'official'|'usermade'|'profile'
 
-interface BoardData {
-    id?: number,
-    type?: BoardType[],
-    name?: string,
-    summary?: string
+interface ParsedBody {
+    username?: string,
+    email?: string,
+    password?: string,
+
+    boardName?: string,
+    boardSummary?: string
+}
+
+interface ParsedQuery {
+    boardType?: BoardType[]
+}
+
+interface ParsedParams {
+    boardId?: number,
 }
 
 declare global {
     namespace Express {
         interface Request {
-            userData: UserData,
-            boardData: BoardData,
             pagination: Pagination,
+            parsedBody: ParsedBody
+            parsedQuery: ParsedQuery
+            parsedParams: ParsedParams
         }
 
         interface Response {
