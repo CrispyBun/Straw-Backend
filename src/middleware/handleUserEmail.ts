@@ -1,8 +1,7 @@
 import express from 'express';
 import joi from 'joi';
 import validateSchema from './helper/validateSchema';
-
-const stringSchema = joi.string().max(128, 'utf8').min(1).email();
+import stringSchema from './joischemas/userEmail'
 
 const schema = joi.object({
     email: stringSchema

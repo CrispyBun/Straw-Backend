@@ -1,8 +1,7 @@
 import express from 'express';
 import joi from 'joi';
 import validateSchema from './helper/validateSchema';
-
-const stringSchema = joi.string().max(64, 'utf8');
+import stringSchema from './joischemas/boardSummary';
 
 const schema = joi.object({
     summary: stringSchema
