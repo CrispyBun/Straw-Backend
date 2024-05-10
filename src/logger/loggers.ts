@@ -19,4 +19,8 @@ const requestLogger = createLogger({
     ]
 });
 
+if (process.env.LOG_LEVEL === undefined) {
+    logger.warn("LOG_LEVEL missing in env - please choose one of: silly, debug, verbose, http, info, warn, error");
+}
+
 export { logger, requestLogger };
