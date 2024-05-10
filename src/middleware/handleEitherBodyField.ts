@@ -23,19 +23,17 @@ const handleEitherBodyField = (...fields: string[]) => {
         schemaObject[incomingFieldNames[fieldIndex]] = schemas[field];
     }
 
-    const schema = joi.object({
-        body: joi.object(schemaObject).xor(...incomingFieldNames).unknown(true).required()
-    });
+    const schema = joi.object(schemaObject).xor(...incomingFieldNames).unknown(true).required();
 
     return (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-        const result = validateSchema({body: req.body}, schema, res);
+        const result = validateSchema(req.body, schema, res);
         if (!result) return;
 
         for (const fieldIndex in fields) {
             const incomingFieldName = incomingFieldNames[fieldIndex];
 
-            const parsed = result.body[incomingFieldName];
+            const parsed = result[incomingFieldName];
             if (parsed !== undefined) {
                 const field = fields[fieldIndex];
                 (req.parsedBody as any)[field] = parsed;    
