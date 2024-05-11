@@ -35,9 +35,11 @@ class BoardController {
     async addBoard(req: express.Request, res: express.Response) {
         if (!req.parsedBody.boardName) throw new Error();
         if (req.parsedBody.boardSummary === undefined) throw new Error();
+        if (!req.parsedHeaders.userId) throw new Error();
         const id = await boardRepository.add({
             name: req.parsedBody.boardName,
-            summary: req.parsedBody.boardSummary
+            summary: req.parsedBody.boardSummary,
+            ownerId: req.parsedHeaders.userId
         });
         builder
         .success()

@@ -6,14 +6,6 @@ DROP TYPE IF EXISTS "board_type";
 
 CREATE TYPE "board_type" AS ENUM ('official', 'usermade', 'profile');
 
-CREATE TABLE "board" (
-    "id" SERIAL NOT NULL,
-    "name" varchar(128) NOT NULL,
-    "summary" varchar(128) NOT NULL,
-    "type" board_type NOT NULL DEFAULT 'usermade',
-    PRIMARY KEY ("id")
-);
-
 CREATE TABLE "user" (
     "id" SERIAL NOT NULL,
     "username" varchar(64) NOT NULL UNIQUE,
@@ -21,6 +13,16 @@ CREATE TABLE "user" (
     "password" char(60) NOT NULL,
     "token_reset" timestamp NULL,
     PRIMARY KEY ("id")
+);
+
+CREATE TABLE "board" (
+    "id" SERIAL NOT NULL,
+    "name" varchar(128) NOT NULL,
+    "summary" varchar(128) NOT NULL,
+    "type" board_type NOT NULL DEFAULT 'usermade',
+    "owner" int NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("owner") REFERENCES "user" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE "post" (
