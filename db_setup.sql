@@ -19,6 +19,7 @@ CREATE TABLE "user" (
     "username" varchar(64) NOT NULL UNIQUE,
     "email" varchar(255) NULL UNIQUE,
     "password" char(60) NOT NULL,
+    "token_reset" timestamp NULL,
     PRIMARY KEY ("id")
 );
 

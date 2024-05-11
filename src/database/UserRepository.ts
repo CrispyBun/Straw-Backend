@@ -20,6 +20,16 @@ class UserRepository {
         if (usernameCount.rows[0].count > 0) return true;
         return false;
     }
+
+    async getLoginDataFromEmail(email: string) {
+        const password = await client.query('SELECT "id", "password" FROM "user" WHERE "email" = $1', [email]);
+        return password.rows[0];
+    }
+
+    async getLoginDataFromUsername(username: string) {
+        const password = await client.query('SELECT "id", "password" FROM "user" WHERE "username" = $1', [username]);
+        return password.rows[0];
+    }
 }
 
 export default new UserRepository();

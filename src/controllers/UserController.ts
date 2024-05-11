@@ -2,6 +2,16 @@ import express from 'express';
 import userRepository from '../database/UserRepository';
 import bcrypt from 'bcrypt';
 import builder from '../response/ResponseBuilder';
+import jwt from 'jsonwebtoken';
+import { logger } from '../logger/loggers';
+
+const tokenExpiration = "1m";
+const jwtpass = process.env.JWT_PASS;
+if (jwtpass === undefined) {
+    const msg = "JWT_PASS missing in env";
+    logger.error(msg);
+    throw new Error(msg);
+}
 
 class UserController {
     async addUser(req: express.Request, res: express.Response) {
@@ -31,6 +41,30 @@ class UserController {
         builder
         .success()
         .setData({id: id})
+        .send(res);
+    }
+
+    async createToken(req: express.Request, res: express.Response) {
+        if (!req.parsedBody.password) throw new Error();
+
+        const builderInvalid = builder.badRequest().setMessage("Invalid username or password");
+
+        let userData;
+        if (req.parsedBody.username) userData = await userRepository.getLoginDataFromUsername(req.parsedBody.username);
+        else if (req.parsedBody.email) userData = await userRepository.getLoginDataFromEmail(req.parsedBody.email);
+
+        const hash = userData.password;
+        if (!hash) return builderInvalid.send(res);
+        
+        const match = await bcrypt.compare(req.parsedBody.password, hash);
+        if (!match) builderInvalid.send(res);
+
+        if (jwtpass === undefined) throw new Error();
+        const token = jwt.sign({userId: userData.id}, jwtpass, {expiresIn: tokenExpiration});
+
+        builder
+        .success()
+        .setData({token: token})
         .send(res);
     }
 }
