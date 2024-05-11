@@ -64,6 +64,11 @@ class ResponseBuilder {
         const response = new Response();
         return response.setStatus(409).setMessage("Conflict");
     }
+
+    public unauthorized() {
+        const response = new Response();
+        return response.setStatus(401).setMessage("Unauthorized");
+    }
 }
 
 export default new ResponseBuilder;

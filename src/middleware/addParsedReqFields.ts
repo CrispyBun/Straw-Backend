@@ -4,6 +4,7 @@ const addParsedBodyField = (req: express.Request, res: express.Response, next: e
     req.parsedBody = {};
     req.parsedQuery = {};
     req.parsedParams = {};
+    req.parsedHeaders = {};
     next();
 }
 

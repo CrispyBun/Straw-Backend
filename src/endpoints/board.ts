@@ -3,6 +3,7 @@ import controller from '../controllers/BoardController';
 import handleBodyField from '../middleware/handleBodyField';
 import handlePaginationQuery from '../middleware/handlePaginationQuery';
 import handleBoardTypeQuery from '../middleware/handleBoardTypeQuery';
+import verifyUser from '../middleware/verifyUser';
 import { handleBoardIdParam } from '../middleware/handleIdParam';
 const board = express.Router();
 
@@ -14,8 +15,7 @@ board.get("/:id", handleBoardIdParam("id"), (req, res) => {
     controller.getBoard(req, res);
 });
 
-// TODO: verify user
-board.post("/", handleBodyField("boardName"), handleBodyField("boardSummary"), (req, res) => {
+board.post("/", verifyUser(), handleBodyField("boardName"), handleBodyField("boardSummary"), (req, res) => {
     controller.addBoard(req, res);
 });
 

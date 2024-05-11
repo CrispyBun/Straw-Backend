@@ -24,13 +24,18 @@ interface ParsedParams {
     boardId?: number,
 }
 
+interface ParsedHeaders {
+    userId?: number;
+}
+
 declare global {
     namespace Express {
         interface Request {
-            pagination: Pagination,
-            parsedBody: ParsedBody
-            parsedQuery: ParsedQuery
-            parsedParams: ParsedParams
+            pagination: Pagination;
+            parsedBody: ParsedBody;
+            parsedQuery: ParsedQuery;
+            parsedParams: ParsedParams;
+            parsedHeaders: ParsedHeaders;
         }
 
         interface Response {

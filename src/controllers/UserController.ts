@@ -5,7 +5,7 @@ import builder from '../response/ResponseBuilder';
 import jwt from 'jsonwebtoken';
 import { logger } from '../logger/loggers';
 
-const tokenExpiration = "1m";
+const tokenExpiration = "90d";
 const jwtpass = process.env.JWT_PASS;
 if (jwtpass === undefined) {
     const msg = "JWT_PASS missing in env";
@@ -47,12 +47,13 @@ class UserController {
     async createToken(req: express.Request, res: express.Response) {
         if (!req.parsedBody.password) throw new Error();
 
-        const builderInvalid = builder.badRequest().setMessage("Invalid username or password");
+        const builderInvalid = builder.badRequest().setMessage("Invalid user or password");
 
         let userData;
         if (req.parsedBody.username) userData = await userRepository.getLoginDataFromUsername(req.parsedBody.username);
         else if (req.parsedBody.email) userData = await userRepository.getLoginDataFromEmail(req.parsedBody.email);
-
+        if (userData === undefined) return builderInvalid.send(res);
+        
         const hash = userData.password;
         if (!hash) return builderInvalid.send(res);
         

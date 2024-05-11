@@ -30,6 +30,11 @@ class UserRepository {
         const password = await client.query('SELECT "id", "password" FROM "user" WHERE "username" = $1', [username]);
         return password.rows[0];
     }
+
+    async getTokenValidity(id: number) {
+        const validity = await client.query('SELECT "token_reset" FROM "user" WHERE "id" = $1', [id]);
+        return validity.rows[0];
+    }
 }
 
 export default new UserRepository();
