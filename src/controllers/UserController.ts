@@ -29,7 +29,7 @@ class UserController {
         }
 
         let user;
-        if (req.parsedHeaders.verifiedUserId) {
+        if (req.parsedHeaders.verifiedUserId && req.parsedParams.userId === req.parsedHeaders.verifiedUserId) {
             user = await userRepository.getPersonal(req.parsedParams.userId);
         }
         else {
