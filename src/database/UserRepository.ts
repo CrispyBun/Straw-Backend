@@ -9,16 +9,16 @@ class UserRepository {
         return result.rows[0].id;
     }
 
+    // select exists(select * from mytable where a = "foo" and b = "bar");
+    // select exists(select 1 from mytable where a = "foo" and b = "bar");
     async emailExists(email: string) {
-        const emailCount = await client.query('SELECT COUNT("email") FROM "user" WHERE "email" = $1', [email]);
-        if (emailCount.rows[0].count > 0) return true;
-        return false;
+        const emailExists = await client.query('SELECT EXISTS(SELECT 1 FROM "user" WHERE "email" = $1)', [email]);
+        return emailExists.rows[0].exists;
     }
 
     async usernameExists(username: string) {
-        const usernameCount = await client.query('SELECT COUNT("username") FROM "user" WHERE "username" = $1', [username]);
-        if (usernameCount.rows[0].count > 0) return true;
-        return false;
+        const usernameExists = await client.query('SELECT EXISTS(SELECT 1 FROM "user" WHERE "username" = $1)', [username]);
+        return usernameExists.rows[0].exists;
     }
 
     async getLoginDataFromEmail(email: string) {

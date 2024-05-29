@@ -3,9 +3,8 @@ import tstypes from '../types/express/index';
 
 class BoardRepository {
     async exists(id: number) {
-        const board = await client.query('SELECT COUNT(*) FROM "board" WHERE "id" = $1', [id]);
-        if (board.rows[0].count > 0) return true;
-        return false;
+        const board = await client.query('SELECT EXISTS(SELECT 1 FROM "board" WHERE "id" = $1)', [id]);
+        return board.rows[0].exists;
     }
 
     async getCount() {
