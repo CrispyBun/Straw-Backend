@@ -3,10 +3,12 @@ import userRepository from '../database/UserRepository';
 import jwt from 'jsonwebtoken';
 import builder from '../response/ResponseBuilder';
 
-const verifyUser = () => {
+const verifyUser = (optional: boolean = false) => {
     return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const authHeader = req.headers["x-auth"]?.toString();
         if (authHeader === undefined) {
+            if (optional) return next();
+
             builder
             .unauthorized()
             .setMessage("Missing X-Auth header")
@@ -44,7 +46,7 @@ const verifyUser = () => {
         }
 
         // User good :-)
-        req.parsedHeaders.userId = userId;
+        req.parsedHeaders.verifiedUserId = userId;
         
         next();
     }

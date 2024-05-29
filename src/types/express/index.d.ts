@@ -22,10 +22,11 @@ interface ParsedQuery {
 
 interface ParsedParams {
     boardId?: number,
+    userId?: number
 }
 
 interface ParsedHeaders {
-    userId?: number;
+    verifiedUserId?: number;
 }
 
 declare global {

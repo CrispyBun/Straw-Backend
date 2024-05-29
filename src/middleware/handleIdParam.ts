@@ -18,5 +18,6 @@ const handleIdParam = (paramName: string, field: string) => {
 }
 
 const handleBoardIdParam = (paramName: string) => { return handleIdParam(paramName, "boardId") };
+const handleUserIdParam  = (paramName: string) => { return handleIdParam(paramName, "userId") };
 
-export { handleIdParam, handleBoardIdParam };
+export { handleIdParam, handleBoardIdParam, handleUserIdParam };

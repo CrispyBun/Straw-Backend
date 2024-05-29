@@ -1,6 +1,11 @@
 import client from "./client";
 
 class UserRepository {
+    async exists(id: number) {
+        const user = await client.query('SELECT EXISTS(SELECT 1 FROM "user" WHERE "id" = $1)', [id]);
+        return user.rows[0].exists;
+    }
+
     async add(data: {username: string, password: string, email?: string}) {
         const username = data.username;
         const email = data.email;
@@ -9,8 +14,16 @@ class UserRepository {
         return result.rows[0].id;
     }
 
-    // select exists(select * from mytable where a = "foo" and b = "bar");
-    // select exists(select 1 from mytable where a = "foo" and b = "bar");
+    async get(id: number) {
+        const user = await client.query('SELECT "id", "username" FROM "user" WHERE "id" = $1', [id]);
+        return user.rows[0];
+    }
+
+    async getPersonal(id: number) {
+        const user = await client.query('SELECT "id", "username", "email" FROM "user" WHERE "id" = $1', [id]);
+        return user.rows[0]
+    }
+
     async emailExists(email: string) {
         const emailExists = await client.query('SELECT EXISTS(SELECT 1 FROM "user" WHERE "email" = $1)', [email]);
         return emailExists.rows[0].exists;

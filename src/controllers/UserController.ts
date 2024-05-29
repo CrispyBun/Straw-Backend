@@ -15,6 +15,33 @@ if (jwtpass === undefined) {
 }
 
 class UserController {
+
+    async getUser(req: express.Request, res: express.Response) {
+        if (!req.parsedParams.userId) throw new Error();
+
+        const exists = await userRepository.exists(req.parsedParams.userId);
+        if (!exists) {
+            builder
+            .badRequest()
+            .setMessage(`User with ID ${req.parsedParams.userId} does not exist`)
+            .send(res);
+            return;
+        }
+
+        let user;
+        if (req.parsedHeaders.verifiedUserId) {
+            user = await userRepository.getPersonal(req.parsedParams.userId);
+        }
+        else {
+            user = await userRepository.get(req.parsedParams.userId);
+        }
+
+        builder
+        .success()
+        .setData(user)
+        .send(res);
+    }
+
     async addUser(req: express.Request, res: express.Response) {
         if (!req.parsedBody.username) throw new Error();
         if (!req.parsedBody.email) throw new Error();
