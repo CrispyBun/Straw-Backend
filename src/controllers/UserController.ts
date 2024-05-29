@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import builder from '../response/ResponseBuilder';
 import jwt from 'jsonwebtoken';
 import { logger } from '../logger/loggers';
+import handleDatabaseError from '../middleware/helper/handleDatabaseError';
 
 const tokenExpiration = "90d";
 const jwtpass = process.env.JWT_PASS;
@@ -36,7 +37,14 @@ class UserController {
         }
 
         const hash = await bcrypt.hash(req.parsedBody.password, 12);
-        const id = await userRepository.add({password: hash, username: req.parsedBody.username, email: req.parsedBody.email});
+
+        let id;
+        try {
+            id = await userRepository.add({password: hash, username: req.parsedBody.username, email: req.parsedBody.email});
+        }
+        catch (err) {
+            return handleDatabaseError((err as any), res);
+        }
 
         builder
         .success()
@@ -58,7 +66,7 @@ class UserController {
         if (!hash) return builderInvalid.send(res);
         
         const match = await bcrypt.compare(req.parsedBody.password, hash);
-        if (!match) builderInvalid.send(res);
+        if (!match) return builderInvalid.send(res);
 
         if (jwtpass === undefined) throw new Error();
         const token = jwt.sign({userId: userData.id}, jwtpass, {expiresIn: tokenExpiration});
