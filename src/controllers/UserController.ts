@@ -69,7 +69,7 @@ class UserController {
         if (!match) return builderInvalid.send(res);
 
         if (jwtpass === undefined) throw new Error();
-        const token = jwt.sign({userId: userData.id}, jwtpass, {expiresIn: tokenExpiration});
+        const token = "Bearer " + jwt.sign({userId: userData.id}, jwtpass, {expiresIn: tokenExpiration});
 
         builder
         .success()

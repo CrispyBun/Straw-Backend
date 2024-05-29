@@ -5,14 +5,17 @@ import builder from '../response/ResponseBuilder';
 
 const verifyUser = () => {
     return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const token = req.headers["x-auth"]?.toString();
-        if (token === undefined) {
+        const authHeader = req.headers["x-auth"]?.toString();
+        if (authHeader === undefined) {
             builder
             .unauthorized()
             .setMessage("Missing X-Auth header")
             .send(res);
             return;
         }
+
+        // Trim "Bearer "
+        const token = authHeader.substring(7);
 
         const builderInvalid = builder.unauthorized().setMessage("Invalid token");
 
