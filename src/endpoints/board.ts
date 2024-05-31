@@ -15,10 +15,6 @@ board.get("/:id", handleBoardIdParam("id"), (req, res) => {
     controller.getBoard(req, res);
 });
 
-board.get("/:id/url", handleBoardIdParam("id"), (req, res) => {
-    controller.getUrl(req, res);
-});
-
 board.post("/", verifyUser(), handleBodyField("boardName"), handleBodyField("boardSummary"), (req, res) => {
     controller.addBoard(req, res);
 });
