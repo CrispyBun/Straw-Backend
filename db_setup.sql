@@ -37,3 +37,16 @@ CREATE TABLE "post" (
     FOREIGN KEY ("board") REFERENCES "board" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY ("author") REFERENCES "user" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+-- Initial official boards
+INSERT INTO "board" ("name", "summary", "url", "type")
+VALUES ('General', 'A generic board for any topic', 'general', 'official');
+
+INSERT INTO "board" ("name", "summary", "url", "type")
+VALUES ('Gaming', 'A videogame focused board', 'gaming', 'official');
+
+INSERT INTO "board" ("name", "summary", "url", "type")
+VALUES ('Straw', 'A place for discussing the Straw website', 'straw', 'official');
+
+INSERT INTO "board" ("name", "summary", "url", "type")
+VALUES ('Random', '', 'random', 'official');
