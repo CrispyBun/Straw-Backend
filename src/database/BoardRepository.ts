@@ -22,6 +22,11 @@ class BoardRepository {
         return board.rows[0];
     }
 
+    async getFromUrl(url: string) {
+        const board = await client.query('SELECT * FROM "board" WHERE "url" = $1', [url]);
+        return board.rows[0];
+    }
+
     async getMany(skip: number = 0, limit: number = 10, types?: tstypes.BoardType[]) {
         let boards;
         if (types) {

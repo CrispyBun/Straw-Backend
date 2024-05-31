@@ -19,25 +19,39 @@ class BoardController {
         return true;
     }
 
-    async getBoard(req: express.Request, res: express.Response) {
-        if (!req.parsedParams.boardId) throw new Error();
-        if (!(await this.handleIdExists(req, res))) return;
+    async handleUrlExists(req: express.Request, res: express.Response) {
+        if (!req.parsedParams.boardUrl) throw new Error();
 
-        const board = await boardRepository.get(req.parsedParams.boardId);
+        const exists = await boardRepository.urlExists(req.parsedParams.boardUrl);
+        if (!exists) {
+            builder
+            .badRequest()
+            .setMessage(`Board with URL "${req.parsedParams.boardUrl}" does not exist`)
+            .send(res);
+            return false;
+        }
+
+        return true;
+    }
+
+    async getBoard(req: express.Request, res: express.Response) {
+        
+        let board;
+        if (req.parsedParams.boardId) {
+            if (!(await this.handleIdExists(req, res))) return;
+            board = await boardRepository.get(req.parsedParams.boardId);
+        }
+        else if (req.parsedParams.boardUrl) {
+            if (!(await this.handleUrlExists(req, res))) return;
+            board = await boardRepository.getFromUrl(req.parsedParams.boardUrl);
+        }
+        if (!board) {
+            throw new Error();
+        }
+
         builder
         .success()
         .setData(board)
-        .send(res);
-    }
-
-    async getUrl(req: express.Request, res: express.Response) {
-        if (!req.parsedParams.boardId) throw new Error();
-        if (!(await this.handleIdExists(req, res))) return;
-
-        const url = await boardRepository.getUrl(req.parsedParams.boardId);
-        builder
-        .success()
-        .setData({url: url})
         .send(res);
     }
 

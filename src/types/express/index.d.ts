@@ -22,6 +22,7 @@ interface ParsedQuery {
 
 interface ParsedParams {
     boardId?: number,
+    boardUrl?: string,
     userId?: number
 }
 
