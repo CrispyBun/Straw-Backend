@@ -4,7 +4,7 @@ import builder from '../response/ResponseBuilder';
 import generateBoardUrl from '../middleware/helper/generateBoardUrl';
 
 class BoardController {
-    async getBoard(req: express.Request, res: express.Response) {
+    async handleIdExists(req: express.Request, res: express.Response) {
         if (!req.parsedParams.boardId) throw new Error();
 
         const exists = await boardRepository.exists(req.parsedParams.boardId);
@@ -13,13 +13,31 @@ class BoardController {
             .badRequest()
             .setMessage(`Board with ID ${req.parsedParams.boardId} does not exist`)
             .send(res);
-            return;
+            return false;
         }
+
+        return true;
+    }
+
+    async getBoard(req: express.Request, res: express.Response) {
+        if (!req.parsedParams.boardId) throw new Error();
+        if (!(await this.handleIdExists(req, res))) return;
 
         const board = await boardRepository.get(req.parsedParams.boardId);
         builder
         .success()
         .setData(board)
+        .send(res);
+    }
+
+    async getUrl(req: express.Request, res: express.Response) {
+        if (!req.parsedParams.boardId) throw new Error();
+        if (!(await this.handleIdExists(req, res))) return;
+
+        const url = await boardRepository.getUrl(req.parsedParams.boardId);
+        builder
+        .success()
+        .setData({url: url})
         .send(res);
     }
 

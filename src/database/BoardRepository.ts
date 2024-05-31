@@ -33,6 +33,11 @@ class BoardRepository {
         return boards.rows;
     }
 
+    async getUrl(id: number) {
+        const board = await client.query('SELECT "url" FROM "board" WHERE "id" = $1', [id]);
+        return board.rows[0].url;
+    }
+
     async add(data: {name: string, summary: string, url: string, type?: tstypes.BoardType, ownerId?: number}) {
         const name = data.name;
         const summary = data.summary;
