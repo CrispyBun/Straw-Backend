@@ -6,11 +6,17 @@ class UserRepository {
         return user.rows[0].exists;
     }
 
-    async add(data: {username: string, password: string, email?: string}) {
+    async urlExists(url: string) {
+        const urlExists = await client.query('SELECT EXISTS(SELECT 1 FROM "user" WHERE "url" = $1)', [url]);
+        return urlExists.rows[0].exists;
+    }
+
+    async add(data: {username: string, password: string, url: string, email?: string}) {
+        const url = data.url;
         const username = data.username;
         const email = data.email;
         const password = data.password;
-        const result = await client.query('INSERT INTO "user" ("username", "email", "password") VALUES ($1, $2, $3) RETURNING "id"', [username, email, password]);
+        const result = await client.query('INSERT INTO "user" ("url", "username", "email", "password") VALUES ($1, $2, $3, $4) RETURNING "id"', [url, username, email, password]);
         return result.rows[0].id;
     }
 

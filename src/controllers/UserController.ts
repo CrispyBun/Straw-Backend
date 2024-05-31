@@ -5,6 +5,7 @@ import builder from '../response/ResponseBuilder';
 import jwt from 'jsonwebtoken';
 import { logger } from '../logger/loggers';
 import handleDatabaseError from '../middleware/helper/handleDatabaseError';
+import generateUserUrl from '../middleware/helper/generateUserUrl';
 
 const tokenExpiration = "90d";
 const jwtpass = process.env.JWT_PASS;
@@ -63,11 +64,17 @@ class UserController {
             return;
         }
 
+        let url;
+        do {
+            url = generateUserUrl();
+        }
+        while (await userRepository.urlExists(url));
+
         const hash = await bcrypt.hash(req.parsedBody.password, 12);
 
         let id;
         try {
-            id = await userRepository.add({password: hash, username: req.parsedBody.username, email: req.parsedBody.email});
+            id = await userRepository.add({password: hash, username: req.parsedBody.username, email: req.parsedBody.email, url: url});
         }
         catch (err) {
             return handleDatabaseError((err as any), res);

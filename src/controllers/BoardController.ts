@@ -41,7 +41,6 @@ class BoardController {
         let url;
         let urlLength = 0;
         do {
-            console.log("yipee");
             urlLength ++;
             url = generateBoardUrl(urlLength);
         }
