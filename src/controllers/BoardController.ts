@@ -1,6 +1,7 @@
 import express from 'express';
 import boardRepository from '../database/BoardRepository';
 import builder from '../response/ResponseBuilder';
+import generateBoardUrl from '../middleware/helper/generateBoardUrl';
 
 class BoardController {
     async getBoard(req: express.Request, res: express.Response) {
@@ -36,10 +37,21 @@ class BoardController {
         if (!req.parsedBody.boardName) throw new Error();
         if (req.parsedBody.boardSummary === undefined) throw new Error();
         if (!req.parsedHeaders.verifiedUserId) throw new Error();
+
+        let url;
+        let urlLength = 0;
+        do {
+            console.log("yipee");
+            urlLength ++;
+            url = generateBoardUrl(urlLength);
+        }
+        while (await boardRepository.urlExists(url));
+
         const id = await boardRepository.add({
             name: req.parsedBody.boardName,
             summary: req.parsedBody.boardSummary,
-            ownerId: req.parsedHeaders.verifiedUserId
+            ownerId: req.parsedHeaders.verifiedUserId,
+            url: url
         });
         builder
         .success()

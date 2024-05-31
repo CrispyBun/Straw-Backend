@@ -7,6 +7,11 @@ class BoardRepository {
         return board.rows[0].exists;
     }
 
+    async urlExists(url: string) {
+        const urlExists = await client.query('SELECT EXISTS(SELECT 1 FROM "board" WHERE "url" = $1)', [url]);
+        return urlExists.rows[0].exists;
+    }
+
     async getCount() {
         const result = await client.query('SELECT COUNT(*) FROM "board"');
         return Number(result.rows[0].count);
@@ -28,12 +33,13 @@ class BoardRepository {
         return boards.rows;
     }
 
-    async add(data: {name: string, summary: string, type?: tstypes.BoardType, ownerId?: number}) {
+    async add(data: {name: string, summary: string, url: string, type?: tstypes.BoardType, ownerId?: number}) {
         const name = data.name;
         const summary = data.summary;
+        const url = data.url;
         const type = data.type || 'usermade';
         const ownerId = data.ownerId || null;
-        const result = await client.query('INSERT INTO "board" ("name", "summary", "type", "owner") VALUES ($1, $2, $3, $4) RETURNING "id"', [name, summary, type, ownerId]);
+        const result = await client.query('INSERT INTO "board" ("name", "summary", "url", "type", "owner") VALUES ($1, $2, $3, $4, $5) RETURNING "id"', [name, summary, url, type, ownerId]);
         return result.rows[0].id;
     }
 }

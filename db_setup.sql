@@ -17,6 +17,7 @@ CREATE TABLE "user" (
 
 CREATE TABLE "board" (
     "id" SERIAL NOT NULL,
+    "url" varchar(64) NOT NULL UNIQUE,
     "name" varchar(128) NOT NULL,
     "summary" varchar(128) NOT NULL,
     "type" board_type NOT NULL DEFAULT 'usermade',
