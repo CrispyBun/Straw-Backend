@@ -21,12 +21,12 @@ class UserRepository {
     }
 
     async get(id: number) {
-        const user = await client.query('SELECT "id", "username" FROM "user" WHERE "id" = $1', [id]);
+        const user = await client.query('SELECT "id", "username", "url" FROM "user" WHERE "id" = $1', [id]);
         return user.rows[0];
     }
 
     async getPersonal(id: number) {
-        const user = await client.query('SELECT "id", "username", "email" FROM "user" WHERE "id" = $1', [id]);
+        const user = await client.query('SELECT "id", "username", "url", "email" FROM "user" WHERE "id" = $1', [id]);
         return user.rows[0]
     }
 
