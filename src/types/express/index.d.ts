@@ -13,7 +13,9 @@ interface ParsedBody {
     password?: string,
 
     boardName?: string,
-    boardSummary?: string
+    boardSummary?: string,
+
+    postTextContent?: string
 }
 
 interface ParsedQuery {

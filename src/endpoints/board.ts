@@ -5,7 +5,10 @@ import handlePaginationQuery from '../middleware/handlePaginationQuery';
 import handleBoardTypeQuery from '../middleware/handleBoardTypeQuery';
 import verifyUser from '../middleware/verifyUser';
 import { handleBoardIdParam } from '../middleware/handleIdParam';
+import postRouter from './post';
 const board = express.Router();
+
+board.use("/:id/post", handleBoardIdParam("id"), postRouter);
 
 board.get("/", handlePaginationQuery(50, 1024, 0), handleBoardTypeQuery(), (req, res) => {
     controller.getBoards(req, res);
