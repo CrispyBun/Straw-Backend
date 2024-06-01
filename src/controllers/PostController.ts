@@ -23,6 +23,21 @@ class PostController {
         .setData({id: id})
         .send(res);
     }
+
+    async getPosts(req: express.Request, res: express.Response) {
+        if (!req.parsedParams.boardId) {
+            if (!req.parsedParams.boardUrl) throw new Error();
+            req.parsedParams.boardId = await boardRepository.getIdFromUrl(req.parsedParams.boardUrl);
+        }
+
+        const posts = await postRepository.getMany(req.parsedParams.boardId!, req.pagination.skip, req.pagination.limit);
+        const postCount = await postRepository.getCount();
+        builder
+        .success()
+        .setData(posts)
+        .addMeta("count", postCount)
+        .send(res);
+    }
 }
 
 export default new PostController();
